@@ -1,19 +1,19 @@
 <?php
 
-namespace backend\modules\settings\controllers;
+namespace backend\controllers;
 
 use Yii;
-use backend\modules\settings\models\Companies;
-use backend\modules\settings\models\CompaniesSearch;
+use backend\models\Locations;
+use backend\models\LocationsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\helpers\Json;
 
 /**
- * CompaniesController implements the CRUD actions for Companies model.
+ * LocationsController implements the CRUD actions for Locations model.
  */
-class CompaniesController extends Controller
+class LocationsController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,12 +31,12 @@ class CompaniesController extends Controller
     }
 
     /**
-     * Lists all Companies models.
+     * Lists all Locations models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CompaniesSearch();
+        $searchModel = new LocationsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +46,7 @@ class CompaniesController extends Controller
     }
 
     /**
-     * Displays a single Companies model.
+     * Displays a single Locations model.
      * @param integer $id
      * @return mixed
      */
@@ -58,21 +58,16 @@ class CompaniesController extends Controller
     }
 
     /**
-     * Creates a new Companies model.
+     * Creates a new Locations model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Companies();
-        
-        if(Yii::$app->request->isAjax&& $model->load($_POST)){
-            Yii::$app->response->format='json';
-            return \yii\widgets\ActiveForm::validate($model);
-        }
-        
+        $model = new Locations();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->company_id]);
+            return $this->redirect(['view', 'id' => $model->location_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -81,7 +76,7 @@ class CompaniesController extends Controller
     }
 
     /**
-     * Updates an existing Companies model.
+     * Updates an existing Locations model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -91,16 +86,21 @@ class CompaniesController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->company_id]);
+            return $this->redirect(['view', 'id' => $model->location_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
         }
     }
+    
+    public function actionGetCityProvince($zipId){
+        $location= Locations::findOne($zipId);
+        echo Json::encode($location);
+    }
 
     /**
-     * Deletes an existing Companies model.
+     * Deletes an existing Locations model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -113,15 +113,15 @@ class CompaniesController extends Controller
     }
 
     /**
-     * Finds the Companies model based on its primary key value.
+     * Finds the Locations model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Companies the loaded model
+     * @return Locations the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Companies::findOne($id)) !== null) {
+        if (($model = Locations::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

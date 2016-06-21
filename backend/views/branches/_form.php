@@ -24,7 +24,6 @@ use kartik\select2\Select2;
         ],
         ]); ?>
 
-
         <?= $form->field($model, 'branch_name')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'branch_address')->textInput(['maxlength' => true]) ?>
