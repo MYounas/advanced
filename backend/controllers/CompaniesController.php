@@ -5,6 +5,8 @@ namespace backend\controllers;
 use Yii;
 use backend\models\Companies;
 use backend\models\CompaniesSearch;
+use backend\models\Branches;
+use backend\models\BranchesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -67,8 +69,9 @@ class CompaniesController extends Controller
     {
         if(Yii::$app->user->can('create-company')){
              $model = new Companies();
+             $branch = new Branches();
 
-            if ($model->load(Yii::$app->request->post())) {
+            if ($model->load(Yii::$app->request->post())&&$branch->load(Yii::$app->request->post())) {
 
                 $imageName=$model->company_name;
                 $model->file=UploadedFile::getInstance($model,'file');
@@ -77,10 +80,16 @@ class CompaniesController extends Controller
                 $model->company_created_date=  date('Y-m-d h:m:s');            
                 $model->company_start_date=  date('Y-m-d h:m:s');
                 $model->save();
+                
+                $branch->companies_company_id=$model->company_id;
+                $branch->branch_created_date=  date('Y-m-d H:m:s');
+                $branch->save();
+                
                 return $this->redirect(['view', 'id' => $model->company_id]);
             } else {
                 return $this->render('create', [
                     'model' => $model,
+                    'branch' => $branch,
                 ]);
             }
         }
