@@ -22,7 +22,9 @@
         "kartik-v/yii2-widget-select2": "@dev",
         "wbraganca/yii2-dynamicform": "*",
         "kartik-v/yii2-grid": "@dev",
-        "kartik-v/yii2-krajee-base": "dev-master"
+        "kartik-v/yii2-krajee-base": "dev-master",
+        "philippfrenzel/yii2fullcalendar": "*",
+        "kartik-v/yii2-editable": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

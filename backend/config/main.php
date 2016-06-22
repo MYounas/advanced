@@ -45,6 +45,9 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'MyComponent'=>[
+          'class'=>'backend\components\MyComponent',  
+        ],
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,

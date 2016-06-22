@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="companies-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a('Create Companies', ['create'], ['class' => 'btn btn-success']) ?>
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'company_name',
             'company_email:email',
             'company_address',
-            'logo',
+//            'logo',
             // 'company_start_date',
             // 'company_created_date',
             // 'company_status',
