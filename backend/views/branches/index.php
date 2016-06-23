@@ -5,6 +5,7 @@ use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\BranchesSearch */
@@ -33,11 +34,31 @@ $this->params['breadcrumbs'][] = $this->title;
         
         Modal::end();
     ?>
+
+    <?php
+    $this->params['test']='a ha test string';
+    $this->beginBlock('ad'); ?>
+    
+    <h3>Thi sis hasding</h3>
+    
+    <?php $this->endBlock();
+        $gridColumns=[
+//          'id',
+            'branch_name',
+            'branch_address',
+            'branch_created_date',
+            'branch_status',
+        ];
+        
+        echo ExportMenu::widget([
+            'dataProvider'=>$dataProvider,
+            'columns'=>$gridColumns
+        ]);
+    ?>
     
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'export'=>false,
         'pjax'=>true,
         'rowOptions'=>  function ($model){
             if($model->branch_status=='inactive'){
@@ -46,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 return ['class'=>'success'];
         },
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+//            ['class' => 'yii\grid\SerialColumn'],
             [
                 'attribute'=>'companies_company_id',
                 'value'=>'companiesCompany.company_name'
@@ -61,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'companiesCompany.company_name',
             'branch_address',
             'branch_created_date',
-             'branch_status',
+            'branch_status',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

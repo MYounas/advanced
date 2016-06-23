@@ -20,6 +20,19 @@ return [
         ],
     ],
     'components' => [
+        'i18n'=>[
+          'translations'=>[
+            'app'=>[
+                'class'=>'yii\i18n\DbMessageSource',
+//                'basePath'=>'@app/messages',
+                'sourceLanguage'=>'en',
+//                'fileMap'=>[
+//                  'app'=>'app.php',
+//                  'app/error'=>'error.php',
+//                ],
+            ],  
+          ],  
+        ],
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
@@ -57,5 +70,9 @@ return [
         ],
         */
     ],
+    'as beforeRequest'=>[
+        'class'=>'backend\components\CheckIfLoggedIn',
+    ],
+    
     'params' => $params,
 ];

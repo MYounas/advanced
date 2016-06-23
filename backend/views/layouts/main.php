@@ -447,6 +447,11 @@ DashboardAsset::register($this);
         <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
       </ul>
+      <?php 
+        if(isset($this->blocks['ad']))
+            echo $this->blocks['ad'];
+      ?>
+      
     </section>
     <!-- /.sidebar -->
   </aside>
@@ -458,6 +463,13 @@ DashboardAsset::register($this);
         Dashboard
         <small>Control panel</small>
       </h1>
+        <div class="languages">
+            <?php
+            foreach(Yii::$app->params['languages'] as $key=>$language){
+                echo '<span class="language" id="'.$key.'">'.$language.' | </span>';
+            }
+            ?>
+        </div>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Dashboard</li>

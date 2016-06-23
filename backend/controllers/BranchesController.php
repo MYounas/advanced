@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\ForbiddenHttpException;
 use yii\helpers\Json;
+use yii\bootstrap\ActiveForm;
 
 /**
  * BranchesController implements the CRUD actions for Branches model.
@@ -103,6 +104,51 @@ class BranchesController extends Controller
         else{
             throw new ForbiddenHttpException;
         }
+    }
+    
+    public function actionValidation(){
+        $model=new Branches();
+          if(Yii::$app->request->isAjax&&$model->load(Yii::$app->request->post())){
+                Yii::$app->response->format='json';
+                return ActiveForm::validate($model);
+            }
+    }
+    
+    public function actionImportExcel(){
+        $inputFile='uploads/branches.xlsx';
+        try{
+            
+            $inputFileType= \PHPExcel_IOFactory::identify($inputFile);
+            $objReader= \PHPExcel_IOFactory::createReader($inputFileType);
+            $objPHPExcel=$objReader->load($inputFile);
+            
+        } catch (Exception $e) {
+            die('Error');
+        }
+        
+        $sheet=$objPHPExcel->getSheet(0);
+        $highestRow=$sheet->getHighestRow();
+        $highestColumn=$sheet->getHighestColumn();
+        $data=[];
+        for($row=1;$row<=$highestRow;$row++){
+            $rowData=$sheet->rangeToArray('A'.$row.':'.$highestColumn.$row,NULL,TRUE,FALSE);
+            if($row==1)continue;
+//            
+//            $branch=new Branches();
+//            $branch->branch_id=$rowData[0][0];
+//            $branch->companies_company_id=$rowData[0][1];
+//            $branch->branch_name=$rowData[0][2];
+//            $branch->branch_address=$rowData[0][3];
+//            $branch->branch_created_date=$rowData[0][4];
+//            $branch->branch_status=$rowData[0][5];
+//            $branch->save();
+            if(!empty($rowData[0][0]))
+                $data[]=[$rowData[0][0],$rowData[0][1],$rowData[0][2],$rowData[0][3],$rowData[0][4],$rowData[0][5]];
+        }
+        
+        Yii::$app->db->createCommand()
+                ->batchInsert('branches',['branch_id','companies_company_id','branch_name','branch_address','branch_created_date','branch_status'], $data)
+                ->execute();
         
     }
 
@@ -155,6 +201,30 @@ class BranchesController extends Controller
     else{
         echo "<option>-</option>";
     }
+}
+
+    public function actionUpload()
+{
+    $fileName = 'file';
+    $uploadPath = 'uploads';
+
+    if (isset($_FILES[$fileName])) {
+        $file = \yii\web\UploadedFile::getInstanceByName($fileName);
+
+        //Print file data
+        //print_r($file);
+
+        if ($file->saveAs($uploadPath . '/' . $file->name)) {
+            //Now save file data to database
+
+            echo \yii\helpers\Json::encode($file);
+        }
+    }
+    else{
+        return $this->render('upload');
+    }
+
+    return false;
 }
 
     /**

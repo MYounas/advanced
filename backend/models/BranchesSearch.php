@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\Branches;
+//use yii\data\Sort;
 
 /**
  * BranchesSearch represents the model behind the search form about `backend\models\Branches`.
@@ -49,6 +50,20 @@ class BranchesSearch extends Branches
             'query' => $query,
         ]);
 
+        $query->joinWith('companiesCompany');
+        
+        $dataProvider->setSort([
+           'attributes'=>[
+               'branch_address',
+               'branch_created_date',
+               'branch_status',
+               'companies_company_id'=>[
+                   'asc'=>['companies.company_name'=>SORT_ASC],
+                   'desc'=>['companies.company_name'=>SORT_DESC],
+               ]
+           ] 
+        ]);
+        
         $this->load($params);
 
         if (!$this->validate()) {
