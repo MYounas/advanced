@@ -20,6 +20,14 @@ return [
         ],
     ],
     'components' => [
+	/*'view' => [
+        'theme' => [
+        //theme integration helplink
+        //http://www.bsourcecode.com/yiiframework2/install-new-theme-in-yiiframework-2/
+            'pathMap' => ['@app/views' => '@app/themes/treecolor'],
+            'baseUrl' => '@web/../themes/treecolor',
+        ],
+],*/
         'i18n'=>[
           'translations'=>[
             'app'=>[
